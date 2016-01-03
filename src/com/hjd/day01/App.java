@@ -29,4 +29,53 @@ public class App{
 		ApplicationContext ac = new ClassPathXmlApplicationContext("com/hjd/day01/applicationContext.xml");
 		System.out.println(ac.getBean("user"));
 	}
+	
+	
+	/**
+	 * singleton:在创建容器之前就创建了对象.默认是singleton模式
+	 * prototype:在用到对象的时候才创建对象
+	 */
+	@Test
+	public void test_createBean1(){
+		ClassPathXmlApplicationContext ac = new ClassPathXmlApplicationContext("com/hjd/day01/applicationContext.xml");
+		
+		System.out.println("---->创建容器");
+		
+		System.out.println(ac.getBean("user"));
+		System.out.println(ac.getBean("user"));
+		
+		ac.destroy();
+	}
+	
+	/**
+	 * 创建对象的讲解
+	 */
+	@Test
+	public void test_createBean2(){
+		ClassPathXmlApplicationContext ac = new ClassPathXmlApplicationContext("com/hjd/day01/applicationContext.xml");
+		
+		System.out.println("---->创建容器");
+		
+		System.out.println(ac.getBean("user"));
+		System.out.println(((User)ac.getBean("user")).getId() + " " +((User)ac.getBean("user")).getName() + " " +((User)ac.getBean("user")).getAddress());
+		
+		ac.destroy();
+	}
+	
+	/**
+	 * init-methodhedestroy-method的讲解
+	 */
+	@Test
+	public void test_initAndDestroy(){
+		ClassPathXmlApplicationContext ac = new ClassPathXmlApplicationContext("com/hjd/day01/applicationContext.xml");
+		
+		System.out.println("---->创建容器");
+		
+		System.out.println(ac.getBean("user"));
+		System.out.println(ac.getBean("user"));
+		
+		ac.destroy();
+	}
+	
+	
 }

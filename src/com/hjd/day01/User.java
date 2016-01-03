@@ -8,6 +8,17 @@ public class User {
 	public User() {
 		System.out.println("----->创建User对象");
 	}
+	
+	
+	public User(int id, String name, String address) {
+		//调用有参构造函数
+		super();
+		this.id = id;
+		this.name = name;
+		this.address = address;
+	}
+
+
 	public int getId() {
 		return id;
 	}
@@ -28,4 +39,11 @@ public class User {
 	}
 	
 	
+	public void init_user(){
+		System.out.println("---->创建对象");
+	}
+	
+	public void destroy_user(){
+		System.out.println("---->销毁对象");
+	}
 }

@@ -9,8 +9,68 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 	
-	<!-- IOC容器的配置,要创建的所有对象都配置在这里 -->
-	<bean id="user" class="com.hjd.day01.User"/>
+	<!-- IOC容器的配置,要创建的所有对象都配置在这里 
+	scope:
+	 singleton:在创建容器之前就创建了对象.默认是singleton模式
+	 prototype:在用到对象的时候才创建对象
+	-->
+	<!--  
+	<bean id="user" class="com.hjd.day01.User" scope="singleton"/>
+	-->
 	
+	<!-- 
+	 lazy-init=true,对象之后在使用的时候才创建
+	 singleton + lazy-init=true 的效果类似于prototype.
+	 layz-init对prototype没有影响
+	 -->
+	 <!-- 
+	<bean id="user" class="com.hjd.day01.User" scope="prototype" lazy-init="true"/>
+	-->
 	
+	<!-- 
+	init-method:在创建对象之后调用.
+	destroy-method:在销毁对象的时候调用
+	 -->
+	 <!--  
+	<bean id="user" class="com.hjd.day01.User" scope="singleton" init-method="init_user" destroy-method="destroy_user"/>
+	-->
+	
+	<!--  ########## 对象创建的讲解 ############### -->
+	
+	<!-- 第一种情况,调用无参构造函数 -->
+	<!--  
+	<bean id="user" class="com.hjd.day01.User" scope="singleton"/>
+	-->
+	
+	<bean id="address" class="java.lang.String">
+	 <constructor-arg value="shanghai"/>
+	</bean>
+	
+	<!-- 第二种情况,调用有参构造函数 
+	index: 参数的索引.指明为第几个参数赋值.默认从0开始升序
+	value: 给参数所赋的具体的值
+	type: 参数的类型
+	ref: 引用一个bean来给另外一个bean赋值
+	-->
+	<!--  
+	<bean id="user" class="com.hjd.day01.User" scope="singleton">
+	    <constructor-arg index="0" value="2" type="int"/>
+	    <constructor-arg index="1" value="hjd" type="java.lang.String"/>
+	    <constructor-arg index="2" ref="address"/>
+	</bean>
+	-->
+	
+	<!-- 第三种情况,调用工厂的实例方法来创建对象
+	factory-bean: 工厂对象
+	factory-method: 所调用的方法
+	-->
+	<!--  
+	<bean id="factory" class="com.hjd.day01.ObjectFactory"/>
+	<bean id="user" factory-bean="factory" factory-method="getInstance"/>
+	-->
+	
+	<!-- 第四种情况,调用工厂的静态方法来创建对象
+	class: 实际上是一个new的过程
+	-->
+	<bean id="user" class="com.hjd.day01.ObjectFactory" factory-method="getStaticInstance"/>
 </beans>      
