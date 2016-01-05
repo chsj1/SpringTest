@@ -7,7 +7,8 @@
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/context/spring-context.xsd"
+        >
 	
 	<!-- IOC容器的配置,要创建的所有对象都配置在这里 
 	scope:
@@ -72,5 +73,115 @@
 	<!-- 第四种情况,调用工厂的静态方法来创建对象
 	class: 实际上是一个new的过程
 	-->
+	<!--  
 	<bean id="user" class="com.hjd.day01.ObjectFactory" factory-method="getStaticInstance"/>
+	-->
+	
+	<!-- ########给属性赋值######### -->
+	
+	<!-- 第一种情况.使用构造函数  -->
+	<!-- 
+	<bean id="user" class="com.hjd.day01.User">
+	   <constructor-arg value="101"/>
+	   <constructor-arg value="jundong"/>
+	   <constructor-arg value="china"/>
+	</bean>
+	-->
+	<!-- 第二种情况.通过set方法给属性赋值 -->
+	<!--  
+	<bean id="user" class="com.hjd.day01.User">
+	    <property name="id" value="201"/>
+	    <property name="name" value="jd"/>
+	    <property name="address" value="shanghai"/>
+	</bean>
+	-->
+	
+	<!-- DI案例一: 以外部bean的形式演示action->service->dao的依赖注入 
+	在这个案例中一定要给相应的类假如setter()方法,否则会报错
+	-->
+	<!--  
+	<bean id="userDao" class="com.hjd.day01.UserDao"/>
+	
+	<bean id="userService" class="com.hjd.day01.UserService">
+	    <property name="userDao" ref="userDao"/>
+	</bean> 
+	
+	<bean id="userAction" class="com.hjd.day01.UserAction">
+	    <property name="userService" ref="userService"/>
+	</bean>
+	-->
+	
+	<!-- DI案例二:内部bean的方式 -->
+	<!--  
+	<bean id="userAction" class="com.hjd.day01.UserAction">
+	   <property name="userService">
+	      <bean id="userService" class="com.hjd.day01.UserService">
+	          <property name="userDao">
+	              <bean id="userDao" class="com.hjd.day01.UserDao"/>
+	          </property>
+	      </bean>
+	   </property>
+	</bean>
+	-->
+	
+	<!-- 第三种情况.通过名称空间p给属性赋值 
+	p:属性-ref 与 p:属性的区别:
+	前者是使用引用来给属性赋值.后者是使用具体的值来给属性赋值
+	-->
+	<!-- p:属性-ref的使用 -->
+	<!-- 
+	<bean id="userDao" class="com.hjd.day01.UserDao"/>
+	
+	<bean id="userService" class="com.hjd.day01.UserService" p:userDao-ref="userDao"/>
+	
+	<bean id="userAction" class="com.hjd.day01.UserAction" p:userService-ref="userService"/>
+	-->
+	
+	<!-- p:属性的使用 -->
+	<!--  
+	<bean id="user" class="com.hjd.day01.User" scope="singleton" p:name="liuyifei"/>
+	-->
+	
+	<!-- 第四种情况.通过自动装配给属性赋值 
+	autowire="byName": autowire的时候会去IOC容器中去寻找与类中属性同名的bean,然后自动装配上
+	-->
+	<!-- 不使用全局的自动装配 -->
+	<!--  
+	<bean id="userDao" class="com.hjd.day01.UserDao"/>
+	
+	<bean id="userService" class="com.hjd.day01.UserService" autowire="byName"/>
+	
+	<bean id="userAction" class="com.hjd.day01.UserAction" autowire="byName"/>
+	-->
+	
+	<!-- 使用全局的自动装配 
+	使用全局的命名空间的时候,在命名空间中加上default-autowire="byName"即可.
+	-->
+	<!--  
+	<bean id="userDao" class="com.hjd.day01.UserDao"/>
+	
+	<bean id="userService" class="com.hjd.day01.UserService"/>
+	
+	<bean id="userAction" class="com.hjd.day01.UserAction"/>
+	-->
+	<!-- 演示byType的使用 
+	byType:根据类型自动装配.那么这时候IOC容器中就只能拥有一个该类型的bean
+	-->
+	<!--  
+	<bean id="userDao" class="com.hjd.day01.UserDao"/>
+	
+	<bean id="userService" class="com.hjd.day01.UserService" autowire="byType"/>
+	
+	<bean id="userAction" class="com.hjd.day01.UserAction" autowire="byType"/>
+	-->
+	
+	<!-- 第五种情况.通过注解给属性赋值
+	
+	基本步骤:
+	1)在命名空间中引入context
+	2)开启注解扫描
+	3)在相应的地方加上注解
+	 -->
+	 <!-- 开启注解扫描 -->
+	<context:component-scan base-package="com.hjd.day01"/>
 </beans>      

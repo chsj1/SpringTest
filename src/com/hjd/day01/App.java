@@ -77,5 +77,12 @@ public class App{
 		ac.destroy();
 	}
 	
+	@Test
+	public void testDI(){
+		ClassPathXmlApplicationContext ac = new ClassPathXmlApplicationContext("com/hjd/day01/applicationContext.xml");
+		
+		UserAction userAction = (UserAction)ac.getBean("userAction");
+		userAction.execute();
+	}
 	
 }
